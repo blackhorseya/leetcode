@@ -152,7 +152,7 @@ func TestSolve(t *testing.T) {
 	}
 }
 
-func TestListNode_Retrieved(t *testing.T) {
+func TestToSlice(t *testing.T) {
 	type fields struct {
 		Val  int
 		Next *ListNode
@@ -183,8 +183,8 @@ func TestListNode_Retrieved(t *testing.T) {
 				Val:  tt.fields.Val,
 				Next: tt.fields.Next,
 			}
-			if got := RetrievedListNode(l); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("RetrievedListNode() = %v, want %v", got, tt.want)
+			if got := ToSlice(l); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("ToSlice() = %v, want %v", got, tt.want)
 			}
 		})
 	}

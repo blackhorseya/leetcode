@@ -10,7 +10,7 @@ type ListNode struct {
 }
 
 func (l *ListNode) String() string {
-	if array := RetrievedListNode(l); array == nil {
+	if array := ToSlice(l); array == nil {
 		return ""
 	} else {
 		var result = ""
@@ -22,7 +22,7 @@ func (l *ListNode) String() string {
 	}
 }
 
-func RetrievedListNode(l *ListNode) []int {
+func ToSlice(l *ListNode) []int {
 	if l == nil {
 		return nil
 	}
@@ -38,53 +38,30 @@ func RetrievedListNode(l *ListNode) []int {
 }
 
 func Solve(first, second *ListNode) *ListNode {
-	if first == nil || second == nil {
-		return nil
-	}
-
-	slice1 := RetrievedListNode(first)
-	slice2 := RetrievedListNode(second)
-
-	if len(slice2) > len(slice1) {
-		var tmp = slice1
-		slice1 = slice2
-		slice2 = tmp
-	}
-
-	var sumSlice []int
-	var over = 0
-	for index := 0; index < len(slice1); index++ {
-		var sum = 0
-		if over > 0 {
-			sum += over
-			over = 0
+	var (
+		result = &ListNode{
+			Val:  0,
+			Next: &ListNode{},
+		}
+		carry = 0
+		tmp   = result
+	)
+	for first != nil || second != nil || carry != 0 {
+		v1 := 0
+		v2 := 0
+		if first != nil {
+			v1 = first.Val
+			first = first.Next
+		}
+		if second != nil {
+			v2 = second.Val
+			second = second.Next
 		}
 
-		if index >= len(slice2) {
-			sum += slice1[index]
-		} else {
-			sum += slice1[index] + slice2[index]
-		}
-		if sum / 10 >= 1 {
-			sum = sum % 10
-			over++
-		}
-
-		sumSlice = append(sumSlice, sum)
-	}
-	if over > 0 {
-		sumSlice = append(sumSlice, over)
-	}
-
-	var result = &ListNode{
-		Val:  0,
-		Next: &ListNode{},
-	}
-	var tmp = result.Next
-	for index, num := range sumSlice {
-		tmp.Val = num
-		if index != len(sumSlice) - 1 {
-			tmp.Next = &ListNode{}
+		val := (v1 + v2 + carry) % 10
+		carry = (v1 + v2 + carry) / 10
+		tmp.Next = &ListNode{
+			Val: val,
 		}
 		tmp = tmp.Next
 	}
