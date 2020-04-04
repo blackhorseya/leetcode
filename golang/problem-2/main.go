@@ -1,7 +1,6 @@
 package main
 
 import (
-	"math"
 	"strconv"
 )
 
@@ -11,70 +10,31 @@ type ListNode struct {
 }
 
 func (l *ListNode) String() string {
-	if l == nil {
+	if array := RetrievedListNode(l); array == nil {
 		return ""
-	}
+	} else {
+		var result = ""
+		for _, num := range array {
+			result += strconv.Itoa(num)
+		}
 
-	var (
-		tmp    = l
-		result = ""
-	)
-
-	for tmp.Next != nil {
-		result = result + strconv.Itoa(tmp.Val)
-		tmp = tmp.Next
-	}
-
-	result = result + strconv.Itoa(tmp.Val)
-	tmp = tmp.Next
-
-	return result
-}
-
-func (l *ListNode) ToRevInt() int {
-	var (
-		tmp    = l
-		result = 0
-		index  = 0
-	)
-
-	for tmp.Next != nil {
-		result += tmp.Val * int(math.Pow10(index))
-		index++
-		tmp = tmp.Next
-	}
-
-	result += tmp.Val * int(math.Pow10(index))
-	index++
-	tmp = tmp.Next
-
-	return result
-}
-
-func IntToListNode(number int) *ListNode {
-	var result = &ListNode{
-		Val:  0,
-		Next: nil,
-	}
-
-	if number == 0 {
 		return result
 	}
+}
 
-	var str = strconv.Itoa(number)
-	result.Next = &ListNode{}
-	var tmp = result.Next
-	for i, s := range str {
-		n, _ := strconv.Atoi(string(s))
-		tmp.Val = n
-		if i != len(str) - 1 {
-			tmp.Next = &ListNode{}
-		}
+func RetrievedListNode(l *ListNode) []int {
+	if l == nil {
+		return nil
+	}
+
+	var result []int
+	var tmp = l
+	for tmp.Next != nil {
+		result = append(result, tmp.Val)
 		tmp = tmp.Next
 	}
 
-	result = result.Next
-	return result
+	return append(result, tmp.Val)
 }
 
 func Solve(first, second *ListNode) *ListNode {
@@ -82,9 +42,54 @@ func Solve(first, second *ListNode) *ListNode {
 		return nil
 	}
 
-	sum := first.ToRevInt() + second.ToRevInt()
-	result := IntToListNode(sum)
-	return result
+	slice1 := RetrievedListNode(first)
+	slice2 := RetrievedListNode(second)
+
+	if len(slice2) > len(slice1) {
+		var tmp = slice1
+		slice1 = slice2
+		slice2 = tmp
+	}
+
+	var sumSlice []int
+	var over = 0
+	for index := 0; index < len(slice1); index++ {
+		var sum = 0
+		if over > 0 {
+			sum += over
+			over = 0
+		}
+
+		if index >= len(slice2) {
+			sum += slice1[index]
+		} else {
+			sum += slice1[index] + slice2[index]
+		}
+		if sum / 10 >= 1 {
+			sum = sum % 10
+			over++
+		}
+
+		sumSlice = append(sumSlice, sum)
+	}
+	if over > 0 {
+		sumSlice = append(sumSlice, over)
+	}
+
+	var result = &ListNode{
+		Val:  0,
+		Next: &ListNode{},
+	}
+	var tmp = result.Next
+	for index, num := range sumSlice {
+		tmp.Val = num
+		if index != len(sumSlice) - 1 {
+			tmp.Next = &ListNode{}
+		}
+		tmp = tmp.Next
+	}
+
+	return result.Next
 }
 
 func main() {

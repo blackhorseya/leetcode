@@ -16,25 +16,6 @@ func TestSolve(t *testing.T) {
 		want *ListNode
 	}{
 		{
-			name: "two nil ListNode",
-			args: args{
-				first:  nil,
-				second: nil,
-			},
-			want: nil,
-		},
-		{
-			name: "any nil ListNode",
-			args: args{
-				first: nil,
-				second: &ListNode{
-					Val:  0,
-					Next: nil,
-				},
-			},
-			want: nil,
-		},
-		{
 			name: "input: (2 -> 4 -> 3) + (5 -> 6 -> 4), output: (7 -> 0 -> 8)",
 			args: args{
 				first: &ListNode{
@@ -59,11 +40,103 @@ func TestSolve(t *testing.T) {
 				},
 			},
 			want: &ListNode{
-				Val: 8,
+				Val: 7,
 				Next: &ListNode{
 					Val: 0,
 					Next: &ListNode{
-						Val:  7,
+						Val:  8,
+						Next: nil,
+					},
+				},
+			},
+		},
+		{
+			name: "input: (5) + (5), output: (0->1)",
+			args: args{
+				first: &ListNode{
+					Val: 5,
+					Next: nil,
+				},
+				second: &ListNode{
+					Val: 5,
+					Next: nil,
+				},
+			},
+			want: &ListNode{
+				Val: 0,
+				Next: &ListNode{
+					Val: 1,
+					Next: nil,
+				},
+			},
+		},
+		{
+			name: "input: (1->8) + (0), output: (1->8)",
+			args: args{
+				first: &ListNode{
+					Val: 1,
+					Next: &ListNode{
+						Val:  8,
+						Next: nil,
+					},
+				},
+				second: &ListNode{
+					Val: 0,
+					Next: nil,
+				},
+			},
+			want: &ListNode{
+				Val: 1,
+				Next: &ListNode{
+					Val: 8,
+					Next: nil,
+				},
+			},
+		},
+		{
+			name: "input: (9->8) + (1), output: (0->9)",
+			args: args{
+				first: &ListNode{
+					Val: 9,
+					Next: &ListNode{
+						Val:  8,
+						Next: nil,
+					},
+				},
+				second: &ListNode{
+					Val: 1,
+					Next: nil,
+				},
+			},
+			want: &ListNode{
+				Val: 0,
+				Next: &ListNode{
+					Val: 9,
+					Next: nil,
+				},
+			},
+		},
+		{
+			name: "input: (1) + (9->9), output: (0->0->1)",
+			args: args{
+				first: &ListNode{
+					Val: 1,
+					Next: nil,
+				},
+				second: &ListNode{
+					Val: 9,
+					Next: &ListNode{
+						Val:  9,
+						Next: nil,
+					},
+				},
+			},
+			want: &ListNode{
+				Val: 0,
+				Next: &ListNode{
+					Val: 0,
+					Next: &ListNode{
+						Val:  1,
 						Next: nil,
 					},
 				},
@@ -79,7 +152,7 @@ func TestSolve(t *testing.T) {
 	}
 }
 
-func TestListNode_ToRevInt(t *testing.T) {
+func TestListNode_Retrieved(t *testing.T) {
 	type fields struct {
 		Val  int
 		Next *ListNode
@@ -87,35 +160,21 @@ func TestListNode_ToRevInt(t *testing.T) {
 	tests := []struct {
 		name   string
 		fields fields
-		want   int
+		want   []int
 	}{
 		{
-			name: "2->4->3",
+			name: "8->0->7",
 			fields: fields{
-				Val: 2,
+				Val: 8,
 				Next: &ListNode{
-					Val: 4,
+					Val: 0,
 					Next: &ListNode{
-						Val:  3,
+						Val:  7,
 						Next: nil,
 					},
 				},
 			},
-			want: 342,
-		},
-		{
-			name: "5->6->4",
-			fields: fields{
-				Val: 5,
-				Next: &ListNode{
-					Val: 6,
-					Next: &ListNode{
-						Val:  4,
-						Next: nil,
-					},
-				},
-			},
-			want: 465,
+			want: []int{8, 0, 7},
 		},
 	}
 	for _, tt := range tests {
@@ -124,53 +183,8 @@ func TestListNode_ToRevInt(t *testing.T) {
 				Val:  tt.fields.Val,
 				Next: tt.fields.Next,
 			}
-			if got := l.ToRevInt(); got != tt.want {
-				t.Errorf("ToRevInt() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestIntToListNode(t *testing.T) {
-	type args struct {
-		number int
-	}
-	tests := []struct {
-		name string
-		args args
-		want *ListNode
-	}{
-		{
-			name: "0",
-			args: args{
-				number: 0,
-			},
-			want: &ListNode{
-				Val:  0,
-				Next: nil,
-			},
-		},
-		{
-			name: "807",
-			args: args{
-				number: 807,
-			},
-			want: &ListNode{
-				Val:  8,
-				Next: &ListNode{
-					Val:  0,
-					Next: &ListNode{
-						Val:  7,
-						Next: nil,
-					},
-				},
-			},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := IntToListNode(tt.args.number); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("IntToListNode() = %v, want %v", got, tt.want)
+			if got := RetrievedListNode(l); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("RetrievedListNode() = %v, want %v", got, tt.want)
 			}
 		})
 	}
