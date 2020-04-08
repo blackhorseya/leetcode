@@ -60,38 +60,3 @@ func TestSolve(t *testing.T) {
 		})
 	}
 }
-
-func TestToSlice(t *testing.T) {
-	type args struct {
-		head *ListNode
-	}
-	tests := []struct {
-		name string
-		args args
-		want []int
-	}{
-		{
-			name: "1,2,3",
-			args: args{
-				head: &ListNode{
-					Val:  1,
-					Next: &ListNode{
-						Val:  2,
-						Next: &ListNode{
-							Val:  3,
-							Next: nil,
-						},
-					},
-				},
-			},
-			want: []int{1, 2, 3},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := ToSlice(tt.args.head); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("ToSlice() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
