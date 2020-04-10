@@ -1,33 +1,41 @@
 package main
 
 import (
-	"regexp"
 	"strings"
 )
 
+func isAlphanumeric(b byte) bool {
+	if b >= 'a' && b <= 'z' || b >= '0' && b <= '9' {
+		return true
+	} else {
+		return false
+	}
+}
+
 func Solve(s string) bool {
 	s = strings.ToLower(s)
-	reg, _ := regexp.Compile("[^a-z0-9]+")
-	s = reg.ReplaceAllString(s, "")
 
-	length := len(s)
-	result := true
-	if length == 0 {
-		return true
-	}
-
-	for index, str := range s[:length/2] {
-		if !result {
-			break
+	left, right := 0, len(s) - 1
+	for left < right {
+		if !isAlphanumeric(s[left]) {
+			left++
+			continue
 		}
 
-		revIndex := length - 1 - index
-		if string(str) != string(s[revIndex]) {
-			result = false
+		if !isAlphanumeric(s[right]) {
+			right--
+			continue
 		}
+
+		if s[left] != s[right] {
+			return false
+		}
+
+		left++
+		right--
 	}
 
-	return result
+	return true
 }
 
 func main() {
