@@ -3,7 +3,8 @@ package main
 import "math"
 
 type MinStack struct {
-	Values []int
+	Values   []int
+	Minimums []int
 }
 
 /** initialize your data structure here. */
@@ -13,11 +14,23 @@ func Constructor() MinStack {
 
 func (this *MinStack) Push(x int) {
 	this.Values = append(this.Values, x)
+
+	min := this.GetMin()
+	if x < min {
+		min = x
+	}
+
+	this.Minimums = append(this.Minimums, min)
 }
 
 func (this *MinStack) Pop() {
 	length := len(this.Values)
+	if length == 0 {
+		return
+	}
+
 	this.Values = this.Values[:length-1]
+	this.Minimums = this.Minimums[:length-1]
 }
 
 func (this *MinStack) Top() int {
@@ -29,12 +42,11 @@ func (this *MinStack) Top() int {
 }
 
 func (this *MinStack) GetMin() int {
-	result := math.MaxInt64
-	for _, value := range this.Values {
-		result = int(math.Min(float64(result), float64(value)))
+	if len(this.Minimums) == 0 {
+		return math.MaxInt32
 	}
 
-	return result
+	return this.Minimums[len(this.Minimums)-1]
 }
 
 func main() {
