@@ -1,38 +1,17 @@
 package main
 
-import (
-	"math"
-)
-
-var visited= make(map[int]int)
-
 func Solve(n int) bool {
 	sum := 0
-	for (n / 10) > 0 {
-		sum = sum + int(math.Pow(float64(n%10), 2))
-		n /= 10
-	}
-	sum = sum + int(math.Pow(float64(n%10), 2))
-
-	if sum == 1 {
-		return true
+	mod := 0
+	for ; n != 0; n /= 10 {
+		mod = n % 10
+		sum += mod * mod
 	}
 
-	if visited[sum] == 0 {
-		visited[sum] = 3
-		if Solve(sum) {
-			visited[sum] = 1
-			return true
-		} else {
-			visited[sum] = 2
-			return false
-		}
+	if sum < 10 && sum == mod*mod {
+		return sum == 1
 	} else {
-		if visited[sum] == 1 {
-			return true
-		} else {
-			return false
-		}
+		return Solve(sum)
 	}
 }
 
