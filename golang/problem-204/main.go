@@ -1,26 +1,39 @@
 package main
 
+import (
+	"math"
+)
+
 func Solve(n int) int {
-	if n <= 2 {
+	if n < 2 {
 		return 0
 	}
 
-	// Initialize the counter, at least (n / 2), because half is even
-	count := n / 2
-	records := make([]bool, n)
-	// 3, 5, 7, 9...
-	for flag := 3; flag*flag < n; flag += 2 {
-		// If records[flag] is not a prime number then pass
-		if records[flag] {
+	notPrimes := make([]bool, n)
+	max := int(math.Sqrt(float64(n)))
+	for flag := 2; flag <= max; flag++ {
+		// If flag number is not a prime number then pass
+		if notPrimes[flag] {
 			continue
 		}
 
-		// Here flag must be prime number
-		for index := flag * flag; index < n; index += 2 * flag {
-			if !records[index] {
-				count--
-				records[index] = true
-			}
+		// Here flag number must be prime number
+		for multiple := 2 * flag; multiple < n; multiple += flag {
+			// Set multiple of flag number is not a prime number
+			notPrimes[multiple] = true
+		}
+	}
+
+	count := 0
+	for index, notPrime := range notPrimes {
+		// Ignore 0 and 1
+		if index <= 1 {
+			continue
+		}
+
+		// If it is a prime number then add count
+		if !notPrime {
+			count++
 		}
 	}
 
