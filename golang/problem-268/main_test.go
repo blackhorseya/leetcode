@@ -12,6 +12,13 @@ func TestSolve(t *testing.T) {
 		want int
 	}{
 		{
+			name: "[0] return 1",
+			args: args{
+				nums: []int{0},
+			},
+			want: 1,
+		},
+		{
 			name: "[3,0,1] return 2",
 			args: args{
 				nums: []int{3, 0, 1},

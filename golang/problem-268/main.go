@@ -1,18 +1,16 @@
 package main
 
 func Solve(nums []int) int {
-	maps := make(map[int]bool)
+	high := len(nums)
+	top := 1
+	bottom := len(nums)
+	expected := (top + bottom) * high / 2
+	actual := 0
 	for _, num := range nums {
-		maps[num] = true
-	}
-	for index := 0; index < (len(nums) + 1); index++ {
-		_, ok := maps[index]
-		if !ok {
-			return index
-		}
+		actual += num
 	}
 
-	return 0
+	return expected - actual
 }
 
 func main() {
