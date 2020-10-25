@@ -18,7 +18,7 @@ func TestSolve(t *testing.T) {
 		{
 			name: "[] 1 then []",
 			args: args{nil, 1},
-			want: []int{0, 0},
+			want: nil,
 		},
 		{
 			name: "[-1,0] -1 then [1,2]",
@@ -41,8 +41,8 @@ func TestSolve(t *testing.T) {
 			want: []int{1, 2},
 		},
 		{
-			name: "[0,4,4,8] 8 then [2,3]",
-			args: args{[]int{0, 4, 4, 8}, 8},
+			name: "[0,4,4,10] 8 then [2,3]",
+			args: args{[]int{0, 4, 4, 10}, 8},
 			want: []int{2, 3},
 		},
 	}

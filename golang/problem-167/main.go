@@ -1,18 +1,19 @@
 package main
 
 func Solve(numbers []int, target int) []int {
-	ret := make([]int, 2)
-	m := make(map[int]int)
+	var ret []int
+	head, tail := 0, len(numbers)-1
 
-	for first, number := range numbers {
-		if second, ok := m[target-number]; ok && second != 0 {
-			ret[0] = second
-			ret[1] = first + 1
+	for head < tail {
+		sum := numbers[head] + numbers[tail]
 
-			break
+		if sum == target {
+			return []int{head + 1, tail + 1}
+		} else if sum > target {
+			tail--
+		} else if sum < target {
+			head++
 		}
-
-		m[number] = first + 1
 	}
 
 	return ret
