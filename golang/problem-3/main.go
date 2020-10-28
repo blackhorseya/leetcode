@@ -1,40 +1,24 @@
 package main
 
 func Solve(s string) int {
-	if len(s) == 1 {
-		return 1
-	}
+	// ascii code
+	asc := make([]int, 128)
+	left := 0
+	ret := 0
 
-	m := make(map[rune]int)
-	charset := []rune(s)
-	size, ret, slow, fast := len(charset), 0, 0, 0
-
-	for slow < size && fast < size {
-		c := charset[fast]
-		if _, ok := m[c]; !ok {
-			m[c] = fast
-
-			if fast == size-1 {
-				return max(ret, fast-slow+1)
-			}
-			fast++
-		} else {
-			ret = max(ret, fast-slow)
-			m = make(map[rune]int)
-			slow++
-			fast = slow
+	for i, c := range s {
+		if asc[c] > left {
+			left = asc[c]
 		}
+
+		if n := i - left + 1; n > ret {
+			ret = n
+		}
+
+		asc[c] = i + 1
 	}
 
 	return ret
-}
-
-func max(a, b int) int {
-	if a >= b {
-		return a
-	}
-
-	return b
 }
 
 func main() {
