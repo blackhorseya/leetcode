@@ -1,13 +1,16 @@
 package main
 
 func Solve(height []int) int {
-	left := 0
-	right := len(height) - 1
-	area := 0
+	if len(height) < 2 {
+		return 0
+	}
 
+	left, right, max := 0, len(height)-1, 0
 	for left < right {
-		h := min(height[left], height[right])
-		area = max(area, h*(right-left))
+		area := min(height[left], height[right]) * (right - left)
+		if area > max {
+			max = area
+		}
 
 		if height[left] < height[right] {
 			left++
@@ -16,15 +19,7 @@ func Solve(height []int) int {
 		}
 	}
 
-	return area
-}
-
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-
-	return b
+	return max
 }
 
 func min(a, b int) int {
