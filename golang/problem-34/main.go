@@ -1,14 +1,26 @@
 package main
 
 func Solve(nums []int, target int) []int {
-	ret := []int{-1, -1}
-	for i := 0; i < len(nums) && nums[i] <= target; i++ {
-		if nums[i] == target {
-			if ret[0] == -1 {
-				ret[0] = i
-			}
+	return []int{find(nums, target, -1), find(nums, target, 1)}
+}
 
-			ret[1] = i
+func find(nums []int, target int, direction int) int {
+	low, high, ret := 0, len(nums)-1, -1
+
+	for low <= high {
+		mid := (low + high) / 2
+		if nums[mid] > target {
+			high = mid - 1
+		} else if nums[mid] < target {
+			low = mid + 1
+		} else {
+			ret = mid
+
+			if direction == 1 {
+				low = mid + 1
+			} else if direction == -1 {
+				high = mid - 1
+			}
 		}
 	}
 
