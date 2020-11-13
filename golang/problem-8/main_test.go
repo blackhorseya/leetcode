@@ -51,99 +51,26 @@ func TestSolve(t *testing.T) {
 			args: args{"-5-"},
 			want: -5,
 		},
+		{
+			name: "[+-12] then 0",
+			args: args{"+-12"},
+			want: 0,
+		},
+		{
+			name: "[+1] then 1",
+			args: args{"+1"},
+			want: 1,
+		},
+		{
+			name: "[9223372036854775808] then 2147483648",
+			args: args{"9223372036854775808"},
+			want: 2147483647,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := Solve(tt.args.s); got != tt.want {
 				t.Errorf("Solve() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestIsDigit(t *testing.T) {
-	type args struct {
-		c rune
-	}
-	tests := []struct {
-		name string
-		args args
-		want bool
-	}{
-		{
-			name: "A then false",
-			args: args{'A'},
-			want: false,
-		},
-		{
-			name: "( then false",
-			args: args{'('},
-			want: false,
-		},
-		{
-			name: "0 then true",
-			args: args{'0'},
-			want: true,
-		},
-		{
-			name: "9 then true",
-			args: args{'9'},
-			want: true,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := IsDigit(tt.args.c); got != tt.want {
-				t.Errorf("IsDigit() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestIsSign(t *testing.T) {
-	type args struct {
-		c rune
-	}
-	tests := []struct {
-		name string
-		args args
-		want bool
-	}{
-		{
-			name: "A then false",
-			args: args{'A'},
-			want: false,
-		},
-		{
-			name: "( then false",
-			args: args{'('},
-			want: false,
-		},
-		{
-			name: "0 then false",
-			args: args{'0'},
-			want: false,
-		},
-		{
-			name: "9 then false",
-			args: args{'9'},
-			want: false,
-		},
-		{
-			name: "+ then true",
-			args: args{'+'},
-			want: true,
-		},
-		{
-			name: "- then true",
-			args: args{'-'},
-			want: true,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := IsSign(tt.args.c); got != tt.want {
-				t.Errorf("IsSign() = %v, want %v", got, tt.want)
 			}
 		})
 	}

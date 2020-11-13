@@ -2,60 +2,62 @@ package main
 
 import (
 	"math"
-	"strconv"
-	"strings"
 )
 
+var toInt = map[byte]int64{
+	'0': 0,
+	'1': 1,
+	'2': 2,
+	'3': 3,
+	'4': 4,
+	'5': 5,
+	'6': 6,
+	'7': 7,
+	'8': 8,
+	'9': 9,
+}
+
 func Solve(s string) int {
-	s = strings.TrimLeft(s, " ")
+	ret, factor := int64(0), int64(1)
+	i, l := 0, len(s)
 
-	if len(s) == 0 {
-		return 0
+	// judgment space character
+	for i < l && s[i] == ' ' {
+		i++
 	}
 
-	if !IsSign(rune(s[0])) && !IsDigit(rune(s[0])) {
-		return 0
+	// judgment sign symbol
+	if i < l && s[i] == '-' {
+		factor = -1
+		i++
+	} else if i < l && s[i] == '+' {
+		i++
 	}
 
-	found := false
-	var msg []rune
-	for i, c := range s {
-		if IsSign(c) || IsDigit(c) {
-			found = true
-			msg = append(msg, c)
-		}
-
-		if found && i+1 < len(s) && !IsDigit(rune(s[i+1])) {
+	// judgment digit character
+	for i < l && ret < math.MaxInt32 {
+		if val, ok := toInt[s[i]]; ok {
+			ret = ret * 10 + val
+			i++
+		} else {
 			break
 		}
 	}
 
-	ret, _ := strconv.Atoi(string(msg))
+	// added sign
+	ret = ret * factor
+
+	// judgment maximum
 	if ret > math.MaxInt32 {
 		return math.MaxInt32
 	}
 
+	// judgment minimum
 	if ret < math.MinInt32 {
 		return math.MinInt32
 	}
 
-	return ret
-}
-
-func IsDigit(c rune) bool {
-	if c > '9' || c < '0' {
-		return false
-	}
-
-	return true
-}
-
-func IsSign(c rune) bool {
-	if c != '+' && c != '-' {
-		return false
-	}
-
-	return true
+	return int(ret)
 }
 
 func main() {
