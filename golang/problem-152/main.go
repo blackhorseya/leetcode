@@ -1,22 +1,39 @@
 package main
 
 func Solve(nums []int) int {
-	if len(nums) == 0 {
-		return 0
-	}
+	ret, minimum, maximum := nums[0], nums[0], nums[0]
 
-	ret := nums[0]
-	for slow := 0; slow < len(nums); slow++ {
-		temp := 1
-		for fast := slow; fast < len(nums); fast++ {
-			temp *= nums[fast]
-			if temp > ret {
-				ret = temp
-			}
+	for i, num := range nums {
+		if i == 0 {
+			continue
 		}
+
+		if num < 0 {
+			maximum, minimum = minimum, maximum
+		}
+
+		maximum = max(num, maximum*num)
+		minimum = min(num, minimum*num)
+		ret = max(ret, maximum)
 	}
 
 	return ret
+}
+
+func max(a, b int) int {
+	if a >= b {
+		return a
+	}
+
+	return b
+}
+
+func min(a, b int) int {
+	if a <= b {
+		return a
+	}
+
+	return b
 }
 
 func main() {

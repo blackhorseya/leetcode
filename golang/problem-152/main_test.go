@@ -12,11 +12,6 @@ func TestSolve(t *testing.T) {
 		want int
 	}{
 		{
-			name: "[] then 0",
-			args: args{[]int{}},
-			want: 0,
-		},
-		{
 			name: "[2,3,-2,4] then 6",
 			args: args{[]int{2, 3, -2, 4}},
 			want: 6,
